@@ -15,4 +15,10 @@
         </property>
     </bean>
 
+    <bean name="elevatorButtonProvider" class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="elevatorButton"/>
+        </property>
+    </bean>
+
 </beans>

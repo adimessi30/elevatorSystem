@@ -4,24 +4,38 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean name="elevator" class="com.adimessi30.elevatorsystem.components.Elevator" scope="prototype"
-          init-method="postConstruct"/>
+          init-method="postConstruct">
+        <constructor-arg ref="elevatorButtons"/>
+    </bean>
     <bean name="elevators" class="com.adimessi30.elevatorsystem.helpers.CollectionFactory"
           factory-method="generateCollectionFromProvider">
         <constructor-arg ref="elevatorProvider"/>
         <constructor-arg name="size" value="#{systemProperties['user.property.numElevators']}"/>
+        <constructor-arg ref="elevatorCollectionHook"/>
     </bean>
 
     <bean name="elevatorRequests" class="java.util.LinkedList"/>
 
-    <bean name="button" class="com.adimessi30.elevatorsystem.components.Button"
-          scope="prototype" init-method="postConstruct">
+    <bean name="abstractButton" class="com.adimessi30.elevatorsystem.components.abstractions.Button"
+          abstract="true" scope="prototype">
         <constructor-arg ref="requestDispatcher"/>
+    </bean>
+
+    <bean name="floorButton" class="com.adimessi30.elevatorsystem.components.FloorButton" parent="abstractButton"
+          scope="prototype" init-method="postConstruct"/>
+
+    <bean name="elevatorButton" class="com.adimessi30.elevatorsystem.components.ElevatorButton" parent="abstractButton"
+          scope="prototype" init-method="postConstruct"/>
+    <bean name="elevatorButtons" class="com.adimessi30.elevatorsystem.helpers.CollectionFactory"
+          factory-method="generateCollectionFromProvider" scope="prototype">
+        <constructor-arg ref="elevatorButtonProvider"/>
+        <constructor-arg name="size" value="#{systemProperties['user.property.numFloors']}"/>
     </bean>
 
     <bean name="floor" class="com.adimessi30.elevatorsystem.components.Floor" scope="prototype"
           init-method="postConstruct">
-        <constructor-arg name="buttonUp" ref="button"/>
-        <constructor-arg name="buttonDown" ref="button"/>
+        <constructor-arg name="floorButtonUp" ref="floorButton"/>
+        <constructor-arg name="floorButtonDown" ref="floorButton"/>
     </bean>
     <bean name="floors" class="com.adimessi30.elevatorsystem.helpers.CollectionFactory"
           factory-method="generateCollectionFromProvider">
