@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean name="elevator" class="com.adimessi30.elevatorsystem.components.Elevator" scope="prototype"
+          init-method="postConstruct"/>
+    <bean name="elevatorProvider" class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="elevator"/>
+        </property>
+    </bean>
+    <bean name="elevators" class="com.adimessi30.elevatorsystem.helpers.CollectionFactory"
+          factory-method="generateCollectionFromProvider">
+        <constructor-arg ref="elevatorProvider"/>
+        <constructor-arg name="size" value="#{systemProperties['user.property.numElevators']}"/>
+    </bean>
+    <bean name="button" class="com.adimessi30.elevatorsystem.components.Button"
+          scope="prototype" init-method="postConstruct"/>
+    <bean name="floor" class="com.adimessi30.elevatorsystem.components.Floor" scope="prototype"
+          init-method="postConstruct">
+        <constructor-arg name="buttonUp" ref="button"/>
+        <constructor-arg name="buttonDown" ref="button"/>
+    </bean>
+    <bean name="floorProvider" class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="floor"/>
+        </property>
+    </bean>
+    <bean name="floors" class="com.adimessi30.elevatorsystem.helpers.CollectionFactory"
+          factory-method="generateCollectionFromProvider">
+        <constructor-arg ref="floorProvider"/>
+        <constructor-arg name="size" value="#{systemProperties['user.property.numFloors']}"/>
+    </bean>
+    <bean name="building" class="com.adimessi30.elevatorsystem.components.Building" init-method="postConstruct">
+        <constructor-arg ref="floors"/>
+        <constructor-arg ref="elevators"/>
+    </bean>
+</beans>
