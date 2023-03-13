@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="requestDispatcher" class="com.adimessi30.elevatorsystem.managers.RequestDispatcher"
+          init-method="postConstruct">
+        <constructor-arg ref="elevatorRequests"/>
+    </bean>
+
+    <bean name="building" class="com.adimessi30.elevatorsystem.components.Building" init-method="postConstruct">
+        <constructor-arg ref="floors"/>
+        <constructor-arg ref="elevators"/>
+    </bean>
+
+</beans>
