@@ -19,4 +19,8 @@ public class RequestDispatcher {
     protected void postConstruct() {
         log.debug("New requestDispatcher instance was created...........");
     }
+
+    public void reset() {
+        elevatorRequests.clear();
+    }
 }
