@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="elevatorProvider" class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="elevator"/>
+        </property>
+    </bean>
+
+    <bean name="floorProvider" class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="floor"/>
+        </property>
+    </bean>
+
+    <bean name="elevatorButtonProvider" class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="elevatorButton"/>
+        </property>
+    </bean>
+
+</beans>
